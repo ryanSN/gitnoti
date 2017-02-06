@@ -1,0 +1,32 @@
+{
+  "name": "gitnoti",
+  "version": "0.0.1",
+  "description": "Track pull request, comments and issues across repositories on windows, linux or mac.",
+  "scripts": {
+    "test": "jest",
+    "build": "",
+    "start": "electron ./src/main.js"
+  },
+  "main": "./src/main.js",
+  "repository": {},
+  "author": "ryanSn <ryan.chatterton@sharpnotions.com>",
+  "license": "GPLv3",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "electron-gh-releases": "^2.0.4",
+    "electron-positioner": "^3.0.0",
+    "octicons": "^5.0.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "electron": "^1.4.15",
+    "electron-packager": "^8.5.1",
+    "jest": "^18.1.0",
+    "node-sass": "^4.5.0",
+    "sass-lint": "^1.10.2",
+    "standard": "^8.6.0"
+  }
+}
