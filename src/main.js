@@ -2,7 +2,7 @@
 
 const electron = require('electron')
 const {app, ipcMain} = electron
-const TrayWindow = require('./TrayWindow')
+const TrayWindow = require('./trayWindow')
 const TrayIcon = require('./trayIcon')
 
 let tray = null
