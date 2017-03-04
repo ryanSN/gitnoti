@@ -13,6 +13,7 @@ pids
 
 # Compiled
 build/release
+build
 dist/
 
 # Dependency Dir
