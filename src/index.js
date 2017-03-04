@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, Tray} = require('electron')
 const electron = require('electron')
 const path = require('path')
+const platform = require('os').platform()
 
 // const assetsDir = path.join(__dirname, 'assets')
 
@@ -12,7 +13,12 @@ let screenElectron
 app.on('ready', () => {
   screenElectron = electron.screen
   // Setup the menubar with an icon
-  let icon = path.resolve(__dirname, '../images/trayicon.png')
+  let icon
+  if (platform === 'win32') {
+    icon = path.resolve(__dirname, '../images/trayicon.ico')
+  } else {
+    icon = path.resolve(__dirname, '../images/trayicon.png')
+  }
   tray = new Tray(icon)
 
   // Add a click handler so that when the user clicks on the menubar icon, it shows
