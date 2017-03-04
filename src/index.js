@@ -5,7 +5,7 @@ const path = require('path')
 // const assetsDir = path.join(__dirname, 'assets')
 
 let tray
-let window
+let mainWindow
 let screenElectron
 // This method is called once Electron is ready to run our code
 // It is effectively the main method of our Electron app
@@ -21,13 +21,13 @@ app.on('ready', () => {
     toggleWindow()
 
     // Show devtools when command clicked
-    if (window.isVisible() && process.defaultApp && event.metaKey) {
-      window.openDevTools({mode: 'detach'})
+    if (mainWindow.isVisible() && process.defaultApp && event.metaKey) {
+      mainWindow.openDevTools({mode: 'detach'})
     }
   })
 
   // Make the popup window for the menubar
-  window = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 300,
     height: 350,
     show: false,
@@ -36,19 +36,19 @@ app.on('ready', () => {
   })
 
   // Tell the popup window to load our index.html file
-  window.loadURL(`file://${path.join(__dirname, '/index.html')}`)
+  mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
   // Only close the window on blur if dev tools isn't opened
-  window.on('blur', () => {
-    if (!window.webContents.isDevToolsOpened()) {
-      window.hide()
+  mainWindow.on('blur', () => {
+    if (!mainWindow.webContents.isDevToolsOpened()) {
+      mainWindow.hide()
     }
   })
 })
 
 const toggleWindow = () => {
-  if (window.isVisible()) {
-    window.hide()
+  if (mainWindow.isVisible()) {
+    mainWindow.hide()
   } else {
     showWindow()
   }
@@ -56,7 +56,7 @@ const toggleWindow = () => {
 
 const showWindow = () => {
   const trayPos = tray.getBounds()
-  const windowPos = window.getBounds()
+  const windowPos = mainWindow.getBounds()
   const mainScreen = screenElectron.getPrimaryDisplay()
   let x = 0
   let y = 0
@@ -70,9 +70,9 @@ const showWindow = () => {
     y = Math.round(trayPos.y - windowPos.height)
   }
 
-  window.setPosition(x, y, false)
-  window.show()
-  window.focus()
+  mainWindow.setPosition(x, y, false)
+  mainWindow.show()
+  mainWindow.focus()
 }
 
 ipcMain.on('show-window', () => {

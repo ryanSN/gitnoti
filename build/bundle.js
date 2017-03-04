@@ -63,11 +63,28 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(__dirname) {var fs = __webpack_require__(3)
+var path = __webpack_require__(1)
+
+var pathFile = path.join(__dirname, 'path.txt')
+
+if (fs.existsSync(pathFile)) {
+  module.exports = path.join(__dirname, fs.readFileSync(pathFile, 'utf-8'))
+} else {
+  throw new Error('Electron failed to install correctly, please delete node_modules/' + path.basename(__dirname) + ' and try installing again')
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, "/"))
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -295,10 +312,10 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -484,46 +501,36 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ (function(module, exports) {
 
-/* WEBPACK VAR INJECTION */(function(__dirname) {var fs = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"fs\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()))
-var path = __webpack_require__(0)
 
-var pathFile = path.join(__dirname, 'path.txt')
-
-if (fs.existsSync(pathFile)) {
-  module.exports = path.join(__dirname, fs.readFileSync(pathFile, 'utf-8'))
-} else {
-  throw new Error('Electron failed to install correctly, please delete node_modules/' + path.basename(__dirname) + ' and try installing again')
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname, process) {
 
-var _require = __webpack_require__(2),
+var _require = __webpack_require__(0),
     app = _require.app,
     BrowserWindow = _require.BrowserWindow,
     ipcMain = _require.ipcMain,
-    Tray = _require.Tray,
-    nativeImage = _require.nativeImage;
+    Tray = _require.Tray;
 
-var path = __webpack_require__(0);
+var electron = __webpack_require__(0);
+var path = __webpack_require__(1);
 
-var assetsDir = path.join(__dirname, 'assets');
+// const assetsDir = path.join(__dirname, 'assets')
 
-var tray = undefined;
-var window = undefined;
-
+var tray = void 0;
+var mainWindow = void 0;
+var screenElectron = void 0;
 // This method is called once Electron is ready to run our code
 // It is effectively the main method of our Electron app
 app.on('ready', function () {
+  screenElectron = electron.screen;
   // Setup the menubar with an icon
   var icon = path.resolve(__dirname, '../images/trayicon.png');
   tray = new Tray(icon);
@@ -534,13 +541,13 @@ app.on('ready', function () {
     toggleWindow();
 
     // Show devtools when command clicked
-    if (window.isVisible() && process.defaultApp && event.metaKey) {
-      window.openDevTools({ mode: 'detach' });
+    if (mainWindow.isVisible() && process.defaultApp && event.metaKey) {
+      mainWindow.openDevTools({ mode: 'detach' });
     }
   });
 
   // Make the popup window for the menubar
-  window = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 300,
     height: 350,
     show: false,
@@ -549,19 +556,19 @@ app.on('ready', function () {
   });
 
   // Tell the popup window to load our index.html file
-  window.loadURL('file://' + path.join(__dirname, '/index.html'));
+  mainWindow.loadURL(path.join('file://', __dirname, '/index.html'));
 
   // Only close the window on blur if dev tools isn't opened
-  window.on('blur', function () {
-    if (!window.webContents.isDevToolsOpened()) {
-      window.hide();
+  mainWindow.on('blur', function () {
+    if (!mainWindow.webContents.isDevToolsOpened()) {
+      mainWindow.hide();
     }
   });
 });
 
 var toggleWindow = function toggleWindow() {
-  if (window.isVisible()) {
-    window.hide();
+  if (mainWindow.isVisible()) {
+    mainWindow.hide();
   } else {
     showWindow();
   }
@@ -569,20 +576,23 @@ var toggleWindow = function toggleWindow() {
 
 var showWindow = function showWindow() {
   var trayPos = tray.getBounds();
-  var windowPos = window.getBounds();
-  var x = void 0,
-      y = 0;
-  if (process.platform == 'darwin') {
+  var windowPos = mainWindow.getBounds();
+  var mainScreen = screenElectron.getPrimaryDisplay();
+  var x = 0;
+  var y = 0;
+  if (process.platform === 'darwin') {
     x = Math.round(trayPos.x + trayPos.width / 2 - windowPos.width / 2);
     y = Math.round(trayPos.y + trayPos.height);
   } else {
-    x = Math.round(trayPos.x + trayPos.width / 2 - windowPos.width / 2);
-    y = Math.round(trayPos.y + trayPos.height * 10);
+    // handle if user has dual monitors, to prevent bleeding off the edge
+    // move to the edge of the monitor if thats that case
+    x = Math.round(trayPos.x + windowPos.width > mainScreen.size.width ? mainScreen.size.width - windowPos.width : trayPos.x);
+    y = Math.round(trayPos.y - windowPos.height);
   }
 
-  window.setPosition(x, y, false);
-  window.show();
-  window.focus();
+  mainWindow.setPosition(x, y, false);
+  mainWindow.show();
+  mainWindow.focus();
 };
 
 ipcMain.on('show-window', function () {
@@ -596,7 +606,7 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
-/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(2)))
 
 /***/ })
 /******/ ]);
