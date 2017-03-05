@@ -1,25 +1,25 @@
 const webpack = require('webpack')
 const path = require('path')
 
-module.exports = {
-  context: path.join(__dirname, '/src'),
-  entry: './index.js',
+const ignore = new webpack.IgnorePlugin(new RegExp('^(fs|ipc)$'))
 
+module.exports = {
+  entry: './src/app',
+  target: 'electron-main',
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '/build')
+    path: path.join(__dirname, 'build')
   },
-  node: {
-    fs: 'empty'
-  },
+  devtool: 'source-map',
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: { presets: ['es2015', 'react'] }
       }
     ]
-  }
+  },
+  plugins: [ignore]
 }

@@ -1,7 +1,6 @@
 const {app, BrowserWindow, ipcMain, Tray} = require('electron')
 const electron = require('electron')
 const path = require('path')
-const platform = require('os').platform()
 
 // const assetsDir = path.join(__dirname, 'assets')
 
@@ -14,10 +13,10 @@ app.on('ready', () => {
   screenElectron = electron.screen
   // Setup the menubar with an icon
   let icon
-  if (platform === 'win32') {
-    icon = path.resolve(__dirname, '../images/trayicon.ico')
+  if (process.platform === 'win32') {
+    icon = path.join(__dirname, '../resources/trayicon.ico')
   } else {
-    icon = path.resolve(__dirname, '../images/trayicon.png')
+    icon = path.join(__dirname, '../resources/trayicon.png')
   }
   tray = new Tray(icon)
 
@@ -43,6 +42,7 @@ app.on('ready', () => {
 
   // Tell the popup window to load our index.html file
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
+  mainWindow.webContents.openDevTools()
 
   // Only close the window on blur if dev tools isn't opened
   mainWindow.on('blur', () => {
