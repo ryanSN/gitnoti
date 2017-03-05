@@ -1,9 +1,10 @@
 
 <div align="center">
   <br />
-  <img height="99" width="352" src="https://github.com/ryanSN/gitnoti/blob/master/gitnoti_logo.png" />
-  <br />
-  
+  <h1>
+    <img height="99" width="352" src="https://github.com/ryanSN/gitnoti/blob/master/gitnoti_logo.png" alt="GitNoti" title="GitNoti" />
+  </h1>
+
   <h4> Track pull request, comments and issues across repositories on Mac, Windows, and Linux </h4>
 
   <p>
