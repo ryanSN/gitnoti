@@ -13,3 +13,6 @@
     </a>
   </p>
 </div>
+
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/ryanSN/gitnoti.svg)](https://greenkeeper.io/)
