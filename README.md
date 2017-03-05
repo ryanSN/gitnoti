@@ -6,6 +6,8 @@
   <p> Track pull request, comments and issues across repositories on Mac, Windows, and Linux </p>
   <br/>
   <p>
-    [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+    <a href="http://standardjs.com/">
+      <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" />
+    </a>
   </p>
 </div>
