@@ -1,6 +1,5 @@
 
 <div align="center">
-  <br />
   <h1>
     <img height="99" width="352" src="https://github.com/ryanSN/gitnoti/blob/master/gitnoti_logo.png" alt="GitNoti" title="GitNoti" />
   </h1>
@@ -11,8 +10,8 @@
     <a href="http://standardjs.com/">
       <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" />
     </a>
+    <a href="https://greenkeeper.io/">
+      <img src="https://badges.greenkeeper.io/ryanSN/gitnoti.svg" />
+    </a>
   </p>
 </div>
-
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/ryanSN/gitnoti.svg)](https://greenkeeper.io/)
