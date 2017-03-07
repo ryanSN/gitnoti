@@ -20,7 +20,6 @@ app.on('ready', () => {
   }
   tray = new Tray(icon)
 
-
   // Add a click handler so that when the user clicks on the menubar icon, it shows
   // our popup window
   tray.on('click', function (event) {
@@ -54,7 +53,7 @@ app.on('ready', () => {
 
   if (process.platform !== 'win23') {
     tray.setHighlightMode('always')
-    
+
     mainWindow.on('show', () => {
       tray.setHighlightMode('always')
     })
@@ -66,15 +65,12 @@ app.on('ready', () => {
 })
 
 const toggleWindow = () => {
-
   if (mainWindow.isVisible()) {
     mainWindow.hide()
   } else {
     showWindow()
   }
 }
-
-
 
 const showWindow = () => {
   const trayPos = tray.getBounds()
@@ -96,7 +92,6 @@ const showWindow = () => {
   mainWindow.show()
   mainWindow.focus()
 }
-
 
 ipcMain.on('show-window', () => {
   showWindow()

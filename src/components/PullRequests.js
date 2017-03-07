@@ -1,5 +1,5 @@
 import React from 'react'
-import GitHubApi from 'github'
+// import GitHubApi from 'github'
 
 class PullRequest extends React.Component {
   render () {

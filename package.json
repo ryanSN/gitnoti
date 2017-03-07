@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "description": "Track pull request, comments and issues across repositories on windows, linux or mac.",
   "scripts": {
-    "test": "node node_modules/jest/bin/jest.js",
+    "test": "./node_modules/.bin/standard && node node_modules/jest/bin/jest.js",
     "start": "./node_modules/.bin/electron .",
     "build": "./node_modules/.bin/webpack",
-    "build:details" : "./node_modules/.bin/webpack --display-error-details"
+    "build:details" : "./node_modules/.bin/webpack --display-error-details",
+    "lint": "./node_modules/.bin/standard"
   },
   "main": "./src/index.js",
   "repository": {},
@@ -17,7 +18,6 @@
     "electron-gh-releases": "^2.0.4",
     "electron-positioner": "^3.0.0",
     "github": "^9.1.0",
-    "menubar": "^5.2.3",
     "octicons": "^5.0.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -41,8 +41,7 @@
     "redux-loop": "^2.2.2",
     "sass-lint": "^1.10.2",
     "standard": "^9.0.0",
-    "webpack": "^2.2.1",
-    "webpack-target-electron-renderer": "^0.4.0"
+    "webpack": "^2.2.1"
   },
   "standard": {
     "globals": [
