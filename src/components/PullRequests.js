@@ -1,14 +1,19 @@
-import React from 'react'
-// import GitHubApi from 'github'
+import React, { PropTypes, Component } from 'react'
 
-class PullRequest extends React.Component {
+class PullRequests extends Component {
   render () {
     return (
-      <div>
-        My Pull Requests
-      </div>
+      <ul>
+        {this.props.pullrequests.map((pr, i) =>
+          <li key={i}>{pr.title}</li>
+        )}
+      </ul>
     )
   }
 }
 
-export default PullRequest
+PullRequests.propTypes = {
+  posts: PropTypes.array.isRequired
+}
+
+export default PullRequests

@@ -1,15 +1,15 @@
-import {compose, createStore} from 'redux'
-import {install as reduxLoop, combineReducers} from 'redux-loop'
-import {routerReducer} from 'react-router-redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+import rootReducer from './reducers/reducers'
 
-const devTools = window.devToolsExtension ? [window.devToolsExtension()] : []
-const enhancers = [reduxLoop(), ...devTools]
+const loggerMiddleware = createLogger()
 
-export const reducers = combineReducers({
-  routing: routerReducer
-})
+const createStoreWithMiddleware = applyMiddleware(
+  thunkMiddleware,
+  loggerMiddleware
+)(createStore)
 
-export default createStore(
-  reducers,
-  compose(...enhancers)
-)
+export default function configureStore (initialState) {
+  return createStoreWithMiddleware(rootReducer, initialState)
+}
