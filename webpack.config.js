@@ -4,7 +4,7 @@ const path = require('path')
 const ignore = new webpack.IgnorePlugin(new RegExp('^(fs|ipc)$'))
 
 module.exports = {
-  entry: './src/app',
+  entry: ['whatwg-fetch', './src/app'],
   target: 'electron-main',
   output: {
     filename: 'bundle.js',

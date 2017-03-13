@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
+import Items from '../components/Items'
 
 class PullRequests extends Component {
   constructor (props) {
@@ -27,7 +28,7 @@ class PullRequests extends Component {
   render () {
     return (
       <div>
-        Pull Requests
+        <Items />
       </div>
     )
   }
