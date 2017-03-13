@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, Tray} = require('electron')
 const electron = require('electron')
 const path = require('path')
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer')
 
 // const assetsDir = path.join(__dirname, 'assets')
 
@@ -10,6 +11,12 @@ let screenElectron
 // This method is called once Electron is ready to run our code
 // It is effectively the main method of our Electron app
 app.on('ready', () => {
+  installExtension(REDUX_DEVTOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err))
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err))
   screenElectron = electron.screen
   // Setup the menubar with an icon
   let icon
@@ -33,8 +40,10 @@ app.on('ready', () => {
 
   // Make the popup window for the menubar
   mainWindow = new BrowserWindow({
-    width: 300,
-    height: 350,
+    // width: 300,
+    // height: 350,
+    width: 600,
+    height: 650,
     show: false,
     frame: false,
     resizable: true
