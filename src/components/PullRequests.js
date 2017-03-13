@@ -12,8 +12,8 @@ class PullRequests extends Component {
   }
 }
 
-PullRequests.propTypes = {
-  posts: PropTypes.array.isRequired
-}
+// PullRequests.propTypes = {
+//   pullRequests: PropTypes.array.isRequired
+// }
 
 export default PullRequests

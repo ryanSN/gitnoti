@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-// import { selectReddit, fetchPostsIfNeeded, invalidateReddit } from '../actions'
-// import Picker from '../components/Picker'
-// import Posts from '../components/Posts'
+import * as actionCreators from '../actions'
 
 class PullRequests extends Component {
   constructor (props) {
@@ -12,6 +11,7 @@ class PullRequests extends Component {
   }
 
   componentDidMount () {
+    actionCreators.getPullRequests()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -25,7 +25,6 @@ class PullRequests extends Component {
   }
 
   render () {
-    const { selectedReddit, posts, isFetching, lastUpdated } = this.props
     return (
       <div>
         Pull Requests
@@ -34,27 +33,14 @@ class PullRequests extends Component {
   }
 }
 
-PullRequests.propTypes = {
-  dispatch: PropTypes.func.isRequired
-}
-
 function mapStateToProps (state) {
-  const { selectedReddit, postsByReddit } = state
-  const {
-    isFetching,
-    lastUpdated,
-    items: posts
-  } = postsByReddit[selectedReddit] || {
-    isFetching: true,
-    items: []
-  }
-
   return {
-    selectedReddit,
-    posts,
-    isFetching,
-    lastUpdated
+    pullRequests: {}
   }
 }
 
-export default connect(mapStateToProps)(PullRequests)
+export function mapDispatchToProps (dispatch) {
+  return bindActionCreators(actionCreators, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PullRequests)
