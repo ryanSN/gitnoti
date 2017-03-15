@@ -4,7 +4,7 @@ import {itemsFetchData} from '../actions'
 
 class Items extends Component {
   componentDidMount () {
-    this.props.fetchData('http://5826ed963900d612000138bd.mockapi.io/items')
+    this.props.fetchData('http://58c8a64d939d711200e9d229.mockapi.io/PullRequests')
   }
 
   render () {
