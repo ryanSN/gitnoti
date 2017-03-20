@@ -5,6 +5,11 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = req
 
 let mainWindow
 
+const Size = {
+  Width: 320,
+  Height: 350
+}
+
 const start = () => {
   let tray
   let screenElectron
@@ -17,8 +22,8 @@ const start = () => {
   const MainWindow = () => {
     // Make the popup window for the menubar
     mainWindow = new BrowserWindow({
-      width: 320,
-      height: 350,
+      width: Size.Width,
+      height: Size.Height,
       show: false,
       frame: false,
       resizable: true,
@@ -30,11 +35,11 @@ const start = () => {
     mainWindow.webContents.openDevTools()
   }
 
-  const toggleWindow = () => {
+  const toggleWindow = (bounds) => {
     if (mainWindow.isVisible()) {
       mainWindow.hide()
     } else {
-      showWindow()
+      showWindow(bounds)
     }
   }
 
@@ -77,6 +82,7 @@ const start = () => {
     mainWindow.on('blur', () => {
       if (!mainWindow.webContents.isDevToolsOpened()) {
         mainWindow.hide()
+        tray.setHighlightMode('never')
       }
     })
 
@@ -91,11 +97,10 @@ const start = () => {
     }
     tray = new Tray(icon)
 
-
     // Add a click handler so that when the user clicks on the menubar icon, it shows
     // our popup window
-    tray.on('click', function (event) {
-      toggleWindow()
+    tray.on('click', function (event, bounds) {
+      toggleWindow(bounds)
 
       // Show devtools when command clicked
       if (mainWindow.isVisible() && process.defaultApp && event.metaKey) {
@@ -105,7 +110,7 @@ const start = () => {
     // Only close the window on blur if dev tools isn't opened
   })
 
-  const showWindow = () => {
+  const showWindow = (bounds) => {
     const trayPos = tray.getBounds()
     const windowPos = mainWindow.getBounds()
     const mainScreen = screenElectron.getPrimaryDisplay()
@@ -114,20 +119,27 @@ const start = () => {
     if (process.platform === 'darwin') {
       x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
       y = Math.round(trayPos.y + trayPos.height + 15)
+    } else if (process.platform === 'linux') {
+      // linux tray click is empty (unbutu 16)
+      // So capture cursor click x/y
+      let cursorPointer = screenElectron.getCursorScreenPoint()
+      x = cursorPointer.x
+      y = cursorPointer.y
     } else {
       // handle if user has dual monitors, to prevent bleeding off the edge
       // move to the edge of the monitor if thats that case
       x = Math.round((trayPos.x + windowPos.width) > mainScreen.size.width ? mainScreen.size.width - windowPos.width : trayPos.x)
       y = Math.round(trayPos.y - windowPos.height - 15)
     }
-
     mainWindow.setPosition(x, y, false)
     mainWindow.show()
     mainWindow.focus()
+
+    tray.setHighlightMode('always')
   }
 
-  ipcMain.on('show-window', () => {
-    showWindow()
+  ipcMain.on('show-window', (event, bounds) => {
+    showWindow(bounds)
   })
 }
 
